@@ -1,16 +1,18 @@
 {
   "name": "nickels",
-  "version": "1.0.0",
-  "description": "Express Ap",
+  "version": "0.1.2",
+  "description": "Express App",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server/server.js"
   },
   "author": "JTR",
+  "private": "true",
   "license": "ISC",
   "dependencies": {
-    "expresss": "0.0.0",
-    "morgan": "^1.8.1"
+    "express": "^4.15.2",
+    "morgan": "^1.8.1",
+    "mustache": "^2.3.0"
   }
 }
