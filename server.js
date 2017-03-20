@@ -16,22 +16,23 @@ app.use(logger("short"));
 
 var publicPath = path.resolve(__dirname,"public");
 app.use(express.static(publicPath));
-// ====================================
-var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
 
-console.log(parsedURL.protocol);
-console.log(parsedURL.host);
-console.log(parsedURL.query);
+app.set("views", path.resolve(__dirname,"views"));
+app.set("view engine", "ejs");
+// ==================================== Testing
+// var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
+//
+// console.log(parsedURL.protocol);
+// console.log(parsedURL.host);
+// console.log(parsedURL.query);
+//
+// var result = Mustache.render("Hi, {{first}} {{last}}!", {
+//   first: 'Taylor',
+//   last: 'Riddick'
+// });
+// console.log(result);
+//
 
-var result = Mustache.render("Hi, {{first}} {{last}}!", {
-  first: 'Taylor',
-  last: 'Riddick'
-});
-console.log(result);
-
-console.log(randomInt());
-console.log(randomInt());
-console.log(randomInt());
 
 // ====================================
 var options = { encoding: "utf-8" };
@@ -50,28 +51,20 @@ app.use(function(req,res,next){
   // console.log("RES IS...",res);
   next();
 });
-app.use(function(req,res,next){
-  let minute = (new Date()).getMinutes();
-  if ((minute % 2) === 0){
-    next();
-  } else {
-    res.statusCode = 403;
-    res.end("Not Authorized");
-  }
-});
-app.use(function(req,res){
-  res.end('Secret info: the password is "swordfish"!');
-})
-app.use(function(req,res){
-  res.writeHead(200,{ "Content-Type": "text/plain"});
-  res.end("Hello world")
-});
+
+
 
 http.createServer(app).listen(port);
 
 app.get("/", function(req, res){
-  res.send("Hello, world!");
+  res.render("index",{message : "I am your friend"});
 });
+
+app.get("/roll", function(req,res){
+  res.render("index",{
+    message: "Hey cutie. You rolled a 1-d-12 and got... " + randomInt()
+  });
+})
 //
 // app.listen(port, function(){
 //   console.log("Express app started on port 3000.")
