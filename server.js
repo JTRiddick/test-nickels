@@ -3,6 +3,8 @@ var url = require("url");
 var http = require("http");
 var Mustache = require("mustache");
 var fs = require("fs");
+var path = require("path");
+var logger = require("morgan");
 
 var randomInt = require("./random-integer");
 
@@ -10,6 +12,10 @@ var app = express();
 
 var port = 3000;
 
+app.use(logger("short"));
+
+var publicPath = path.resolve(__dirname,"public");
+app.use(express.static(publicPath));
 // ====================================
 var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
 
@@ -38,25 +44,35 @@ fs.readFile("myFile.txt",options,function(err,data){
 });
 // =====================================
 
+app.use(function(req,res,next){
+  console.log("In comes a " + req.method + " to " + req.url);
+  // console.log("REQ IS...",req);
+  // console.log("RES IS...",res);
+  next();
+});
+app.use(function(req,res,next){
+  let minute = (new Date()).getMinutes();
+  if ((minute % 2) === 0){
+    next();
+  } else {
+    res.statusCode = 403;
+    res.end("Not Authorized");
+  }
+});
+app.use(function(req,res){
+  res.end('Secret info: the password is "swordfish"!');
+})
+app.use(function(req,res){
+  res.writeHead(200,{ "Content-Type": "text/plain"});
+  res.end("Hello world")
+});
+
+http.createServer(app).listen(port);
+
 app.get("/", function(req, res){
   res.send("Hello, world!");
 });
-
-app.listen(port, function(){
-  console.log("Express app started on port 3000.")
-})
-
-function requestHandler(req,res){
-  if (req.url === "/"){
-    res.end("WELCOME TO PAGE!!");
-  } else if (req.url === "/about") {
-    res.end("Welcome to the about page!");
-  } else {
-    res.end("Error! File not found!")
-  }
-  console.log("In comes a request to: " + req.url);
-  res.end("Hello, world!");
-}
-
-var server = http.createServer(requestHandler);
-server.listen(port+1);
+//
+// app.listen(port, function(){
+//   console.log("Express app started on port 3000.")
+// })
