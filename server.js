@@ -5,8 +5,9 @@ var Mustache = require("mustache");
 var fs = require("fs");
 var path = require("path");
 var logger = require("morgan");
+var bodyParser = require("body-parser");
 
-var randomInt = require("./random-integer");
+var rollDice = require("./random-integer");
 
 var app = express();
 
@@ -19,6 +20,11 @@ app.use(express.static(publicPath));
 
 app.set("views", path.resolve(__dirname,"views"));
 app.set("view engine", "ejs");
+
+var entries = [];
+app.locals.entries = entries;
+
+app.use(bodyParser.urlencoded({extended:false}));
 // ==================================== Testing
 // var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
 //
@@ -47,24 +53,47 @@ fs.readFile("myFile.txt",options,function(err,data){
 
 app.use(function(req,res,next){
   console.log("In comes a " + req.method + " to " + req.url);
+  console.log("Locals are... ", app.locals);
   // console.log("REQ IS...",req);
   // console.log("RES IS...",res);
   next();
 });
 
-
-
-http.createServer(app).listen(port);
-
 app.get("/", function(req, res){
-  res.render("index",{message : "I am your friend"});
+  res.render("index.ejs",{message : "I am your friend\nLocals are " + JSON.stringify(app.locals)});
 });
 
 app.get("/roll", function(req,res){
-  res.render("index",{
-    message: "Hey cutie. You rolled a 1-d-12 and got... " + randomInt()
+  res.render("roll.ejs",{
+    diceroll: "Hey cutie. You rolled a 1-d-12 and got... " + rollDice(1,12)
   });
-})
+});
+
+app.get("/new-entry", function(req,res){
+  res.render("new-entry.ejs");
+});
+
+app.post("/new-entry", function(req,res){
+  if(!req.body.title || !req.body.body){
+    res.status(400).send("Entries must have a title and a body.");
+    return;
+  }
+  entries.push({
+    title: req.body.title,
+    content: req.body.body,
+    published: new Date()
+  });
+  res.redirect("/");
+});
+
+app.use(function(req,res){
+  res.status(404).render("404");
+});
+
+
+http.createServer(app).listen(port, function(){
+  console.log("Test Nickels App Started on Port " + port);
+});
 //
 // app.listen(port, function(){
 //   console.log("Express app started on port 3000.")

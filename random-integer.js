@@ -1,7 +1,18 @@
-const MAX = 100;
 
-function randomInteger() {
-  return Math.floor((Math.random()*MAX));
+function randomInteger(d) {
+  return Math.floor((Math.random()*d));
 }
 
-module.exports = randomInteger;
+function rollDice(rolls,dice) {
+  let arr = [];
+  if (rolls > 1){
+    for (var i = 0; i <= rolls; i++) {
+      arr.push(randomInteger(dice));
+    }
+    return arr;
+  } else{
+    return randomInteger(dice);
+  }
+}
+
+module.exports = rollDice;
