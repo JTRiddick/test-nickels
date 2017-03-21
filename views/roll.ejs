@@ -3,7 +3,16 @@
 <article class="test">
   <h3>Message from Node</h3>
   <div class="node-message">
-    <p>  <%= diceroll %> </p>
+    <div class="panel panel-defualt">
+      <ol>
+        <% if (typeof diceroll === "number"){ %>
+        <li>  <%= diceroll %> </li>
+        <% } else { %>
+          <% for(var i = 0; i<diceroll.length;i++){ %>
+          <li> <%= diceroll[i] %> </li>
+            <% }} %>
+      </ol>
+    </div>
   </div>
 </article>
 

@@ -61,8 +61,15 @@
         </div>
         <div class="container">
           <section class="header">
-            <h2>Roll a 1d12 <a href="/roll" class="btn btn-primary pull-right">
-            Roll Dice?</a></h2>
+            <h2>Roll a Die</h2>
+          </section>
+          <section class="panel panel-default">
+            <form class="form-group" action="/dice" method="post">
+              <p>Rolls:</p><input type="text" name="rolls" value= ""  class="form-control">
+              <p>Sides:</p><input type="text" name="sides"  class="form-control">
+              <input type="submit" name="" value="Roll Dice" class="btn btn-primary pull-right">
+            </form>
+
           </section>
         </div>
         <div class="container">

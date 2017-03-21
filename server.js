@@ -22,7 +22,11 @@ app.set("views", path.resolve(__dirname,"views"));
 app.set("view engine", "ejs");
 
 var entries = [];
+var dieSides = 12;
+var dieRolls = 1;
 app.locals.entries = entries;
+app.locals.dieSides = dieSides;
+app.locals.dieRolls = dieRolls;
 
 app.use(bodyParser.urlencoded({extended:false}));
 // ==================================== Testing
@@ -57,20 +61,27 @@ app.use(function(req,res,next){
 });
 
 app.get("/", function(req, res){
-  console.log('locals', app.locals);
-  // app.locals.entries = entries;
+  // console.log('locals', app.locals);
   res.render("index.ejs");
 });
 
 app.get("/roll", function(req,res){
   res.render("roll",{
-    diceroll: "Hey cutie. You rolled a 1-d-12 and got... " + rollDice(1,12)
+    diceroll: rollDice(dieRolls,dieSides)
   });
 });
 
 app.get("/new-entry", function(req,res){
   res.render("new-entry");
 });
+
+app.post("/dice",function(req,res){
+  console.log("dice button req.body ", req.body);
+  dieSides = (req.body.sides - 0);
+  dieRolls = (req.body.rolls - 0);
+  console.log("now sides and rolls are ", dieSides, dieRolls)
+  res.redirect("/roll");
+})
 
 app.post("/new-entry", function(req,res){
   if(!req.body.title || !req.body.body){
