@@ -41,36 +41,35 @@ app.use(bodyParser.urlencoded({extended:false}));
 
 
 // ====================================
-var options = { encoding: "utf-8" };
-fs.readFile("myFile.txt",options,function(err,data){
-  if (err) {
-    console.error("Error reading file!");
-    return;
-  }
-  console.log(data.match(/x/gi).length + " letter X's");
-});
+// var options = { encoding: "utf-8" };
+// fs.readFile("myFile.txt",options,function(err,data){
+//   if (err) {
+//     console.error("Error reading file!");
+//     return;
+//   }
+//   console.log(data.match(/x/gi).length + " letter X's");
+// });
 // =====================================
 
 app.use(function(req,res,next){
   console.log("In comes a " + req.method + " to " + req.url);
-  console.log("Locals are... ", app.locals);
-  // console.log("REQ IS...",req);
-  // console.log("RES IS...",res);
   next();
 });
 
 app.get("/", function(req, res){
-  res.render("index.ejs",{message : "I am your friend\nLocals are " + JSON.stringify(app.locals)});
+  console.log('locals', app.locals);
+  // app.locals.entries = entries;
+  res.render("index");
 });
 
 app.get("/roll", function(req,res){
-  res.render("roll.ejs",{
+  res.render("roll",{
     diceroll: "Hey cutie. You rolled a 1-d-12 and got... " + rollDice(1,12)
   });
 });
 
 app.get("/new-entry", function(req,res){
-  res.render("new-entry.ejs");
+  res.render("new-entry");
 });
 
 app.post("/new-entry", function(req,res){
@@ -91,10 +90,10 @@ app.use(function(req,res){
 });
 
 
-http.createServer(app).listen(port, function(){
-  console.log("Test Nickels App Started on Port " + port);
-});
-//
-// app.listen(port, function(){
-//   console.log("Express app started on port 3000.")
-// })
+// http.createServer(app).listen(port, function(){
+//   console.log("Test Nickels App Started on Port " + port);
+// });
+
+app.listen(port, function(){
+  console.log("Express app started on port 3000.")
+})
