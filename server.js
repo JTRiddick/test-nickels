@@ -59,7 +59,7 @@ app.use(function(req,res,next){
 app.get("/", function(req, res){
   console.log('locals', app.locals);
   // app.locals.entries = entries;
-  res.render("index");
+  res.render("index.ejs");
 });
 
 app.get("/roll", function(req,res){

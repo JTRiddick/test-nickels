@@ -1,4 +1,4 @@
-<%- include('header.ejs') %>
+<% include header %>
 <% if (entries.length){ %>
   <% entries.forEach(function(entry) { %>
     <div class="panel panel-default">
@@ -9,7 +9,7 @@
         <%= entry.title %>
       </div>
       <div class="panel-body">
-        <%= entry.body %>
+        <%= entry.content %>
       </div>
     </div>
     <% }) %>
