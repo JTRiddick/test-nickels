@@ -28,6 +28,8 @@ app.locals.entries = entries;
 app.locals.dieSides = dieSides;
 app.locals.dieRolls = dieRolls;
 
+app.locals.motd = "I heart bees";
+
 app.use(bodyParser.urlencoded({extended:false}));
 // ==================================== Testing
 // var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
@@ -65,6 +67,10 @@ app.get("/", function(req, res){
   res.render("index.ejs");
 });
 
+app.get("/posts", function(req,res){
+  res.render("posts.ejs");
+})
+
 app.get("/roll", function(req,res){
   res.render("roll",{
     diceroll: rollDice(dieRolls,dieSides)
@@ -74,6 +80,10 @@ app.get("/roll", function(req,res){
 app.get("/new-entry", function(req,res){
   res.render("new-entry");
 });
+
+app.get("/dice", function(req,res){
+  res.render("dice");
+})
 
 app.post("/dice",function(req,res){
   console.log("dice button req.body ", req.body);

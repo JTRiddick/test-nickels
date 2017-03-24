@@ -1,0 +1,17 @@
+<% include header %>
+
+<div class="container">
+  <section class="header">
+    <h2>Roll a Die</h2>
+  </section>
+  <section class="panel panel-default">
+    <form class="form-group dice-form" action="/dice" method="post">
+      <p>Rolls:</p><input type="text" name="rolls" value= ""  class="form-control">
+      <p>Sides:</p><input type="text" name="sides"  class="form-control">
+      <input type="submit" name="roll" value="Roll Dice" class="btn btn-primary pull-right">
+    </form>
+
+  </section>
+</div>
+
+<% include footer %>
