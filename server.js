@@ -11,7 +11,7 @@ var rollDice = require("./random-integer");
 
 var app = express();
 
-var port = 3000;
+var port = process.env.PORT || 3000;
 
 app.use(logger("short"));
 
@@ -64,6 +64,30 @@ app.get("/", function(req, res){
   // console.log('locals', app.locals);
   res.render("index.ejs");
 });
+
+app.use(function(req,res,next){
+  console.log("Request IP: " + req.url);
+  console.log("Request date: " + new Date());
+  next();
+});
+
+app.use(function(req,res,next){
+  var filePath = path.join(__dirname,"static", req.url);
+  fs.stat(filePath, function(err,fileInfo){
+    if (err){
+      next();
+      return;
+    }
+    if(fileInfo.isFile()){
+      res.sendFile(filePath);
+    } else {
+      next();
+    }
+  });
+});
+
+var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'), {flags:'a'});
+app.use(logger('combined', {stream: accessLogStream}));
 
 app.get("/roll", function(req,res){
   res.render("roll",{

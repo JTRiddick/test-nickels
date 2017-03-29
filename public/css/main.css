@@ -132,9 +132,12 @@ article{
 .header{
   text-align: center;
 }
-
-
-
+p ~ input {
+  margin: 0.277em 1em;
+}
+input ~ p {
+  margin: 0.2555em;
+}
 
 
 
