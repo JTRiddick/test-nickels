@@ -28,6 +28,8 @@ app.locals.entries = entries;
 app.locals.dieSides = dieSides;
 app.locals.dieRolls = dieRolls;
 
+app.locals.motd = "I heart bees";
+
 app.use(bodyParser.urlencoded({extended:false}));
 // ==================================== Testing
 // var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
@@ -89,6 +91,10 @@ app.use(function(req,res,next){
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'), {flags:'a'});
 app.use(logger('combined', {stream: accessLogStream}));
 
+app.get("/posts", function(req,res){
+  res.render("posts.ejs");
+})
+
 app.get("/roll", function(req,res){
   res.render("roll",{
     diceroll: rollDice(dieRolls,dieSides)
@@ -98,6 +104,10 @@ app.get("/roll", function(req,res){
 app.get("/new-entry", function(req,res){
   res.render("new-entry");
 });
+
+app.get("/dice", function(req,res){
+  res.render("dice");
+})
 
 app.post("/dice",function(req,res){
   console.log("dice button req.body ", req.body);
@@ -123,11 +133,6 @@ app.post("/new-entry", function(req,res){
 app.use(function(req,res){
   res.status(404).render("404");
 });
-
-
-// http.createServer(app).listen(port, function(){
-//   console.log("Test Nickels App Started on Port " + port);
-// });
 
 app.listen(port, function(){
   console.log("Express app started on port 3000.")

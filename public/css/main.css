@@ -139,6 +139,20 @@ input ~ p {
   margin: 0.2555em;
 }
 
+.well{
+  margin: 2em;
+
+}
+.dice-form{
+  padding:6px 8px;
+}
+input[name="roll"]{
+  position: relative;
+  top:22px;
+}
+.panel-content > p{
+  padding:12px;
+}
 
 
 
