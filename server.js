@@ -58,7 +58,7 @@ app.use(function(req,res,next){
   var filePath = path.join(__dirname,"static", req.url);
   fs.stat(filePath, function(err,fileInfo){
     if (err){
-      next();
+      next(new Error("Error sending file!"));
       return;
     }
     if(fileInfo.isFile()){
@@ -67,6 +67,11 @@ app.use(function(req,res,next){
       next();
     }
   });
+});
+//on Error, throw 500 Responsive
+app.use(function(err,req,res,next){
+  res.status(500);
+  res.send("Internal server error.");
 });
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'), {flags:'a'});
