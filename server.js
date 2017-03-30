@@ -8,6 +8,7 @@ var logger = require("morgan");
 var bodyParser = require("body-parser");
 
 var rollDice = require("./random-integer");
+var motdReader = require("./motd-reader");
 
 var app = express();
 
@@ -24,38 +25,15 @@ app.set("view engine", "ejs");
 var entries = [];
 var dieSides = 12;
 var dieRolls = 1;
+var motd = motdReader();
+
 app.locals.entries = entries;
 app.locals.dieSides = dieSides;
 app.locals.dieRolls = dieRolls;
-
-app.locals.motd = "I heart bees";
+app.locals.motd = motd;
 
 app.use(bodyParser.urlencoded({extended:false}));
-// ==================================== Testing
-// var parsedURL = url.parse("http://www.jtriddick.com/profile?name=taylor");
-//
-// console.log(parsedURL.protocol);
-// console.log(parsedURL.host);
-// console.log(parsedURL.query);
-//
-// var result = Mustache.render("Hi, {{first}} {{last}}!", {
-//   first: 'Taylor',
-//   last: 'Riddick'
-// });
-// console.log(result);
-//
 
-
-// ====================================
-// var options = { encoding: "utf-8" };
-// fs.readFile("myFile.txt",options,function(err,data){
-//   if (err) {
-//     console.error("Error reading file!");
-//     return;
-//   }
-//   console.log(data.match(/x/gi).length + " letter X's");
-// });
-// =====================================
 
 app.use(function(req,res,next){
   console.log("In comes a " + req.method + " to " + req.url);
@@ -67,12 +45,14 @@ app.get("/", function(req, res){
   res.render("index.ejs");
 });
 
+//request middleware
 app.use(function(req,res,next){
   console.log("Request IP: " + req.url);
   console.log("Request date: " + new Date());
   next();
 });
 
+//serve static file middleware without express.static
 app.use(function(req,res,next){
   var filePath = path.join(__dirname,"static", req.url);
   fs.stat(filePath, function(err,fileInfo){
