@@ -25,12 +25,12 @@ app.set("view engine", "ejs");
 var entries = [];
 var dieSides = 12;
 var dieRolls = 1;
-var motd = motdReader();
+
 
 app.locals.entries = entries;
 app.locals.dieSides = dieSides;
 app.locals.dieRolls = dieRolls;
-app.locals.motd = motd;
+app.locals.motd = "Hey look, nothing!";
 
 app.use(bodyParser.urlencoded({extended:false}));
 
@@ -42,6 +42,7 @@ app.use(function(req,res,next){
 
 app.get("/", function(req, res){
   // console.log('locals', app.locals);
+  motdReader(app);
   res.render("index.ejs");
 });
 
