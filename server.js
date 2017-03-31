@@ -53,27 +53,6 @@ app.use(function(req,res,next){
   next();
 });
 
-//serve static file middleware without express.static
-app.use(function(req,res,next){
-  var filePath = path.join(__dirname,"static", req.url);
-  fs.stat(filePath, function(err,fileInfo){
-    if (err){
-      next(new Error("Error sending file!"));
-      return;
-    }
-    if(fileInfo.isFile()){
-      res.sendFile(filePath);
-    } else {
-      next();
-    }
-  });
-});
-//on Error, throw 500 Responsive
-app.use(function(err,req,res,next){
-  res.status(500);
-  res.send("Internal server error.");
-});
-
 var accessLogStream = fs.createWriteStream(path.join(__dirname,'access.log'), {flags:'a'});
 app.use(logger('combined', {stream: accessLogStream}));
 
@@ -118,6 +97,33 @@ app.post("/new-entry", function(req,res){
 
 app.use(function(req,res){
   res.status(404).render("404");
+});
+
+//serve static file middleware without express.static
+app.use(function(req,res,next){
+  var filePath = path.join(__dirname,"static", req.url);
+  fs.stat(filePath, function(err,fileInfo){
+    if (err){
+      next(new Error("Error sending file!"));
+      return;
+    }
+    if(fileInfo.isFile()){
+      res.sendFile(filePath);
+    } else {
+      next();
+    }
+  });
+});
+
+
+app.use(function(err,req,res,next){
+  console.error(err);
+  next(err);
+})
+
+app.use(function(err,req,res,next){
+  res.status(500);
+  res.send("Internal Server Error\n",err);
 });
 
 app.listen(port, function(){
