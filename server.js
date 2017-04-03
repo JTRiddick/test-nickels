@@ -7,6 +7,8 @@ var path = require("path");
 var logger = require("morgan");
 var bodyParser = require("body-parser");
 
+var apiRouter = require("./routes/api_router")
+
 var rollDice = require("./random-integer");
 var motdReader = require("./motd-reader");
 
@@ -18,6 +20,12 @@ app.use(logger("short"));
 
 var publicPath = path.resolve(__dirname,"public");
 app.use(express.static(publicPath));
+
+var staticPath = path.resolve(__dirname,"static");
+app.use(express.static(staticPath));
+
+var uploadsPath = path.resolve(__dirname,"uploads");
+app.use("/uploads", express.static(uploadsPath));
 
 app.set("views", path.resolve(__dirname,"views"));
 app.set("view engine", "ejs");
@@ -39,6 +47,8 @@ app.use(function(req,res,next){
   console.log("In comes a " + req.method + " to " + req.url);
   next();
 });
+
+app.use("/api",apiRouter);
 
 app.get("/", function(req, res){
   // console.log('locals', app.locals);
@@ -95,26 +105,26 @@ app.post("/new-entry", function(req,res){
   res.redirect("/");
 });
 
+app.get(/^\/users\/(\d+)$/, function(req,res){
+  var userId = parseInt(req.params[0],10);
+  console.log("user id ",userId);
+  res.status(200).send("this is for ",userId);
+});
+
+app.use(function(req,res,next){
+  res.sendFile(staticPath,function(err){
+    if (err){
+      next(new Error("Error sending file!"))
+    }
+    else{
+      console.log("sent a file");
+    }
+  })
+});
+
 app.use(function(req,res){
   res.status(404).render("404");
 });
-
-//serve static file middleware without express.static
-app.use(function(req,res,next){
-  var filePath = path.join(__dirname,"static", req.url);
-  fs.stat(filePath, function(err,fileInfo){
-    if (err){
-      next(new Error("Error sending file!"));
-      return;
-    }
-    if(fileInfo.isFile()){
-      res.sendFile(filePath);
-    } else {
-      next();
-    }
-  });
-});
-
 
 app.use(function(err,req,res,next){
   console.error(err);
@@ -122,9 +132,9 @@ app.use(function(err,req,res,next){
 })
 
 app.use(function(err,req,res,next){
-  res.status(500);
-  res.send("Internal Server Error\n",err);
+  res.status(500).send("Internal Server Error\n",err);
 });
+
 
 app.listen(port, function(){
   console.log("Express app started on port 3000.")
