@@ -86,3 +86,6 @@
 ::ffff:127.0.0.1 - - [03/Apr/2017:23:30:30 +0000] "GET /75219 HTTP/1.1" 500 1139 "http://localhost:3000/forecast?zip=55115" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
 ::ffff:127.0.0.1 - - [03/Apr/2017:23:32:15 +0000] "GET /12345 HTTP/1.1" 500 1139 "http://localhost:3000/forecast?zip=12345" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
 ::ffff:127.0.0.1 - - [03/Apr/2017:23:32:31 +0000] "GET /75219 HTTP/1.1" 500 1139 "http://localhost:3000/forecast?zip=12345" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
+::ffff:127.0.0.1 - - [03/Apr/2017:23:46:19 +0000] "GET /posts HTTP/1.1" 200 3983 "http://localhost:3000/forecast" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
+::ffff:127.0.0.1 - - [03/Apr/2017:23:46:22 +0000] "GET /new-entry HTTP/1.1" 200 4502 "http://localhost:3000/posts" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"
+::ffff:127.0.0.1 - - [03/Apr/2017:23:47:28 +0000] "GET /new-entry HTTP/1.1" 304 - "http://localhost:3000/posts" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.87 Safari/537.36"

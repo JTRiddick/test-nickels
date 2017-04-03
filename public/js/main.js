@@ -1,5 +1,5 @@
 $(function(){
-  var $h1 = $("h1");
+  var $h1 = $("h1[data='temp']");
   var $zip = $("input[name='zip']");
 
   $("#zipform").on("submit",function(evt){
