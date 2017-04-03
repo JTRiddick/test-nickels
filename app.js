@@ -11,8 +11,10 @@ var apiRouter = require("./routes/api_router")
 
 var rollDice = require("./random-integer");
 var motdReader = require("./motd-reader");
+var weatherRouter = require("./routes/weather_routes");
 
 var app = express();
+
 
 var port = process.env.PORT || 3000;
 
@@ -49,6 +51,7 @@ app.use(function(req,res,next){
 });
 
 app.use("/api",apiRouter);
+app.use("/forecast",weatherRouter);
 
 app.get("/", function(req, res){
   // console.log('locals', app.locals);
