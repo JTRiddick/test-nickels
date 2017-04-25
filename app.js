@@ -12,6 +12,8 @@ var apiRouter = require("./routes/api_router")
 var rollDice = require("./random-integer");
 var motdReader = require("./motd-reader");
 var weatherRouter = require("./routes/weather_routes");
+var getPosts = require("./getposts");
+var savePosts = require("./saveposts");
 
 var app = express();
 
@@ -56,6 +58,7 @@ app.use("/forecast",weatherRouter);
 app.get("/", function(req, res){
   // console.log('locals', app.locals);
   motdReader(app);
+  getPosts(app);
   res.render("index.ejs");
 });
 
@@ -105,6 +108,7 @@ app.post("/new-entry", function(req,res){
     content: req.body.body,
     published: new Date()
   });
+  savePosts(app,entries);
   res.redirect("/");
 });
 
